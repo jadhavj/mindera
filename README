@@ -1,0 +1,30 @@
+Upload wardrobe CSV with: POST http://localhost:9000/uploadWardrobe multi-part parameter name = wardrobeFile
+
+Some preloaded data:
+    "create table apparel("id" bigint auto_increment primary key, "apparelname" varchar, "category" varchar)"()
+    "create table outfit("id" bigint auto_increment primary key, "outfitName" varchar)"()
+    "create table outfit_apparels("id" bigint auto_increment primary key, "outfitId" bigint, "apparelId" bigint, foreign key ("outfitId") references outfit("id"), foreign key ("apparelId") references apparel("id"))") .execute()
+    "insert into apparel("apparelname", "category") values ('Jeans', 'Tops')"
+    "insert into apparel("apparelname", "category") values ('T-Shirt', 'Tops')"
+    "insert into apparel("apparelname", "category") values ('Crop Top', 'Tops')"
+    "insert into apparel("apparelname", "category") values ('Vest', 'Tops')"
+    "insert into apparel("apparelname", "category") values ('Skirt', 'Bottoms')"
+    "insert into apparel("apparelname", "category") values ('Sweater', 'Tops')"
+    "insert into outfit("outfitName") values ('Winter Wear')"
+    "insert into outfit("outfitName") values ('Casuals')"
+    "insert into outfit_apparels("outfitId", "apparelId") values (1,4)"
+    "insert into outfit_apparels("outfitId", "apparelId") values (1,6)"
+    
+Search by clothes name:
+http://localhost:9000/apparels?apparelname=Vest&offset=0&limit=1
+Result: [{"id":4,"apparelname":"Vest","category":"Tops"}]
+
+Get outfits in the wardrobe:
+http://localhost:9000/wardrobe
+Result: [[4,"Vest","Tops","Winter Wear"],[6,"Sweater","Tops","Winter Wear"]
+
+Tag an outfit:
+http://localhost:9000/tagOutfit?outfitId=2&apparelId=1
+
+Get outfits in the wardrobe (after tagging):
+[[4,"Vest","Tops","Winter Wear"],[6,"Sweater","Tops","Winter Wear"],[1,"Jeans","Tops","Casuals"]]
